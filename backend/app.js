@@ -11,16 +11,17 @@ const abmRoutes = require("./routes/abm");
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://filetandoando.netlify.app"],
   credentials: true
 }));
+
 app.use(express.json());
 
 app.use(session({
-  secret: "claveSecreta",
+  secret: process.env.SESSION_SECRET || "claveSecreta",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 30 } // 30 minutos
+  cookie: { maxAge: 1000 * 60 * 30 }
 }));
 
 
@@ -38,6 +39,7 @@ app.use("/admin/productos", verificarSesion, productosRoutes);
 // Rutas de autenticación
 app.use("/auth", authRoutes);
 
-app.listen(3001, () => {
-  console.log("Servidor backend en puerto 3001 🚀");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor backend en puerto ${PORT} 🚀`);
 });
