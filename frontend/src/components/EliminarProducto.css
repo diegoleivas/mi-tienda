@@ -1,0 +1,72 @@
+
+.lista-productos {
+  list-style: none;
+  padding: 0;
+}
+
+.item-producto {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.miniatura {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin: 0 15px;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+}
+
+.info-producto {
+  flex-grow: 1;
+}
+
+.checkbox-color {
+  accent-color: #ff4d4d; /* rojo llamativo */
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.btn-eliminar {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-eliminar:hover {
+  background-color: #e63939;
+}
+
+.item-producto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  background: #f0f4f8; /* gris suave */
+  border-radius: 12px; /* puntas redondeadas */
+  padding: 12px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* sombra elegante */
+}
+
+.item-producto:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* sombra más marcada al hover */
+  background: #e2e6ea;
+}
+
+.eliminar-producto {
+  padding: 70px 30px; 
+  background: linear-gradient(180deg, hsl(0, 3%, 94%) 0%, #e0e0e0 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}

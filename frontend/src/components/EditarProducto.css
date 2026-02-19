@@ -1,0 +1,89 @@
+.item-producto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* separa imagen, info y botón */
+  margin-bottom: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.2s ease;
+  gap: 20px; /* agrega espacio entre elementos */
+}
+
+.miniatura {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 15px; /* ya tenías este margen, lo mantenemos */
+  border-radius: 6px;
+  border: 2px solid #ddd;
+}
+
+.info-producto {
+  flex: 1; /* mantiene la info ocupando el centro */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-producto button {
+  align-self: flex-start; /* evita que se estire */
+  margin-top: 8px;
+  background-color: #e63939;; /* tu color original */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: auto; /* asegura que no ocupe todo el ancho */
+}
+
+.info-producto input {
+  margin: 5px 0;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: auto;        /* evita que ocupe todo el ancho */
+  max-width: 200px;   /* límite opcional para que quede prolijo */
+}
+
+.lista-productos {
+  list-style: none;
+  padding: 0;
+  max-width: 800px;   /* límite de ancho */
+  margin: 0 auto;     /* centra horizontalmente */
+}
+
+.editar-producto .item-producto {
+  background: #f0f4f8; /* gris suave */
+}
+
+.editar-producto .item-producto:hover {
+  background: #e2e6ea;
+}
+
+.editar-producto {
+  padding: 70px 30px; 
+  background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+.item-producto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  background: #f0f4f8; /* gris suave */
+  border-radius: 12px; /* puntas redondeadas */
+  padding: 12px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* sombra elegante */
+}
+
+.item-producto:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* sombra más marcada al hover */
+  background: #e2e6ea;
+}
+

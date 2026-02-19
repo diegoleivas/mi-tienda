@@ -1,0 +1,41 @@
+
+.navbar {
+  padding: 1rem;
+  background: #eee;
+}
+
+.nav-link { 
+    margin-right: 1rem; 
+    text-decoration: none; 
+    transition: transform 0.2s ease; 
+}
+
+.nav-logout:hover { transform: scale(1.05); }
+
+.nav-link:hover { 
+    transform: scale(1.2); 
+}
+
+.nav-inicio {
+  color: rgba(217, 78, 78, 0.906);
+  
+}
+
+.nav-abm {
+  color:rgba(217, 78, 78, 0.906);
+  
+}
+
+.nav-carrito {
+  color: rgba(217, 78, 78, 0.906);
+  
+}
+
+.nav-logout {
+  color:rgba(19, 18, 18, 0.906);
+  
+ 
+}
+
+
+
