@@ -11,7 +11,7 @@ const abmRoutes = require("./routes/abm");
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:3000", "https://filetandoando.netlify.app"],
+  origin: ["http://localhost:3000", "https://filetandoando.netlify.app","https://mi-frontend.netlify.app"],
   credentials: true
 }));
 
