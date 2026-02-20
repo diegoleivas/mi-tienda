@@ -1,10 +1,14 @@
+// frontend/src/components/ProductoCard.jsx
 import "./ProductoCard.css";
+
+// URL del backend según entorno
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 function ProductoCard({ producto }) {
   return (
     <div className="card">
       <img
-        src={`/images/${producto.imagen}`} // 👈 carpeta /public/images/
+        src={`${API_URL}${producto.imagen}`} // 🔹 siempre apunta al backend
         alt={producto.nombre}
         className="card-img"
       />
