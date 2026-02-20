@@ -7,8 +7,8 @@ import Footer from "../components/Footer";
 // ✅ URL del backend según el entorno
 // - Local: REACT_APP_API_URL no definida → localhost
 // - Producción: REACT_APP_API_URL definida en Netlify
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
-//const API_URL = "https://mi-tienda-production-2c4a.up.railway.app";
+//const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+const API_URL = "https://mi-tienda-production-2c4a.up.railway.app";
 
 function Home() {
   const [productos, setProductos] = useState([]);
