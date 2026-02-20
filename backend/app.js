@@ -3,42 +3,49 @@ const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
 
-const authRoutes = require("./routes/auth");   // 👈 solo una vez
+const authRoutes = require("./routes/auth");
 const productosRoutes = require("./routes/productos");
 const verificarSesion = require("./middleware/verificarSesion");
 const abmRoutes = require("./routes/abm");
 
 const app = express();
 
+// ✅ CORS CORRECTO
 app.use(cors({
-  origin: ["http://localhost:3000", "https://filetandoando.netlify.app","https://mi-frontend.netlify.app"],
+  origin: "https://fileteandoando.netlify.app", // 👈 TU FRONTEND REAL
   credentials: true
 }));
 
 app.use(express.json());
 
+// ✅ SESIONES
 app.use(session({
   secret: process.env.SESSION_SECRET || "claveSecreta",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 30 }
+  cookie: { 
+    maxAge: 1000 * 60 * 30,
+    secure: true,          // 🔥 importante en producción (https)
+    sameSite: "none"       // 🔥 necesario para Netlify + Railway
+  }
 }));
 
+// ✅ RUTAS
+app.use("/abm", abmRoutes);
 
-app.use("/abm", abmRoutes); 
-
-// Servir imágenes desde la carpeta uploads
+// Servir imágenes
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Rutas públicas
+// Públicas
 app.use("/productos", productosRoutes);
 
-// Rutas protegidas con sesión
+// Protegidas
 app.use("/admin/productos", verificarSesion, productosRoutes);
 
-// Rutas de autenticación
+// Auth
 app.use("/auth", authRoutes);
 
+// ✅ PUERTO
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor backend en puerto ${PORT} 🚀`);
