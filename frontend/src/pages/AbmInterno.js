@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function AbmInterno({ onLogin }) {
-  const [usuario, setUsuario] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ function AbmInterno({ onLogin }) {
     }
 
     try {
-      const success = await onLogin(usuario, password);
+      const success = await onLogin(username, password);
       if (success) {
         navigate("/abm-interno"); // 👈 redirige al área protegida
       } else {
@@ -36,8 +36,8 @@ function AbmInterno({ onLogin }) {
         <input
           type="text"
           placeholder="Usuario"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
@@ -53,4 +53,3 @@ function AbmInterno({ onLogin }) {
 }
 
 export default AbmInterno;
-
