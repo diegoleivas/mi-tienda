@@ -32,7 +32,7 @@ router.get("/productos", async (req, res) => {
 // Alta de producto
 router.post("/productos", upload.single('imagen'), async (req, res) => {
   const { nombre, precio, stock, descripcion, categoria } = req.body;
-  const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+  const imagen = req.file ? `/uploads/${req.file.filename}` : '';
   try {
     const [result] = await connection.query(
       "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES (?, ?, ?, ?, ?, ?)",
