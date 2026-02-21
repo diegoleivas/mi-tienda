@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./EliminarProducto.css"; // 👈 archivo de estilos
+import "./EliminarProducto.css";
+
+const API_URL = "https://mi-tienda-9ku2.onrender.com";
 
 function EliminarProducto() {
   const [productos, setProductos] = useState([]);
   const [seleccionados, setSeleccionados] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/abm/productos")
+    axios
+      .get(`${API_URL}/abm/productos`, { withCredentials: true })
       .then((res) => {
         const data = res.data.productos || res.data.data || res.data;
         setProductos(Array.isArray(data) ? data : []);
@@ -16,11 +19,9 @@ function EliminarProducto() {
   }, []);
 
   const toggleSeleccion = (id) => {
-    if (seleccionados.includes(id)) {
-      setSeleccionados(seleccionados.filter((sel) => sel !== id));
-    } else {
-      setSeleccionados([...seleccionados, id]);
-    }
+    setSeleccionados((prev) =>
+      prev.includes(id) ? prev.filter((sel) => sel !== id) : [...prev, id]
+    );
   };
 
   const handleDelete = () => {
@@ -31,12 +32,14 @@ function EliminarProducto() {
 
     Promise.all(
       seleccionados.map((id) =>
-        axios.delete(`http://localhost:3001/abm/productos/${id}`)
+        axios.delete(`${API_URL}/abm/productos/${id}`, { withCredentials: true })
       )
     )
       .then(() => {
         alert("Productos eliminados ✅");
-        setProductos(productos.filter((p) => !seleccionados.includes(p.id)));
+        setProductos((prev) =>
+          prev.filter((p) => !seleccionados.includes(p.id || p.id_producto))
+        );
         setSeleccionados([]);
       })
       .catch((err) => console.error("Error al eliminar productos:", err));
@@ -44,20 +47,20 @@ function EliminarProducto() {
 
   return (
     <div className="eliminar-producto">
-      
       <ul className="lista-productos">
         {productos.map((p) => (
-          <li key={p.id} className="item-producto">
+          <li key={p.id || p.id_producto} className="item-producto">
             <input
               type="checkbox"
               className="checkbox-color"
-              checked={seleccionados.includes(p.id)}
-              onChange={() => toggleSeleccion(p.id)}
+              checked={seleccionados.includes(p.id || p.id_producto)}
+              onChange={() => toggleSeleccion(p.id || p.id_producto)}
             />
             <img
-              src={`/images/${p.imagen}`}
+              src={`${API_URL}${p.imagen}`}
               alt={p.nombre}
               className="miniatura"
+              onError={(e) => (e.target.src = "/images/default.jpg")}
             />
             <div className="info-producto">
               <strong>{p.nombre}</strong>
