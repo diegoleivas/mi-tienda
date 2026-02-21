@@ -13,8 +13,8 @@ const app = express();
 // ✅ CORS: permite tu frontend local y remoto
 app.use(cors({
   origin: [
-    
-    "https://fileteandoando.netlify.app" // tu Netlify real
+     "https://tu-dominio.vercel.app"
+   // "https://fileteandoando.netlify.app" // tu Netlify real
   ],
   credentials: true
 }));
