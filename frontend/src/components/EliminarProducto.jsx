@@ -8,22 +8,26 @@ function EliminarProducto() {
   const [productos, setProductos] = useState([]);
   const [seleccionados, setSeleccionados] = useState([]);
 
+  // Cargar productos desde la API
   useEffect(() => {
     axios
       .get(`${API_URL}/abm/productos`, { withCredentials: true })
       .then((res) => {
+        console.log("Respuesta del backend:", res.data); // 🔹 para debug
         const data = res.data.productos || res.data.data || res.data;
         setProductos(Array.isArray(data) ? data : []);
       })
       .catch((err) => console.error("Error al traer productos:", err));
   }, []);
 
+  // Alternar selección de checkbox
   const toggleSeleccion = (id) => {
     setSeleccionados((prev) =>
       prev.includes(id) ? prev.filter((sel) => sel !== id) : [...prev, id]
     );
   };
 
+  // Eliminar productos seleccionados
   const handleDelete = () => {
     if (seleccionados.length === 0) {
       alert("Seleccioná al menos un producto para eliminar");
