@@ -21,7 +21,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ SESIONES
+// ✅ SESIO
 app.use(session({
   secret: process.env.SESSION_SECRET || "claveSecreta",
   resave: false,
