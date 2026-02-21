@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useProductos } from "./useProductos"; // 🔹 hook compartido
 import axios from "axios";
 import "./NuevoProducto.css";
 
+const API_URL = "https://mi-tienda-9ku2.onrender.com"; // misma URL que los demás módulos
+
 function NuevoProducto() {
-  const { cargarProductos, API_URL } = useProductos(); // para refrescar la lista
   const [formData, setFormData] = useState({
     nombre: "",
     precio: "",
@@ -57,9 +57,6 @@ function NuevoProducto() {
           categoria: ""
         });
         setImagenFile(null);
-
-        // Refrescar lista de productos
-        if (cargarProductos) cargarProductos();
       })
       .catch((err) => console.error("Error al agregar producto:", err));
   };
