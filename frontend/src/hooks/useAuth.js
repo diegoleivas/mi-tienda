@@ -4,7 +4,7 @@ export function useAuth() {
   const [user, setUser] = useState(null);
 
   const login = async (username, password) => {
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = process.env.REACT_APP_API_URL.replace(/\/$/, '');
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,7 +20,7 @@ export function useAuth() {
   };
 
   const logout = async () => {
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = process.env.REACT_APP_API_URL.replace(/\/$/, '');
     await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
       credentials: "include"
