@@ -10,9 +10,12 @@ const abmRoutes = require("./routes/abm");
 
 const app = express();
 
-// ✅ CORS CORRECTO
+// ✅ CORS: permite tu frontend local y remoto
 app.use(cors({
-  origin: "https://fileteandoando.netlify.app", // 👈 TU FRONTEND REAL
+  origin: [
+    "http://localhost:3000",
+    "https://fileteandoando.netlify.app" // tu Netlify real
+  ],
   credentials: true
 }));
 
@@ -23,30 +26,25 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "claveSecreta",
   resave: false,
   saveUninitialized: false,
-  cookie: { 
-    maxAge: 1000 * 60 * 30,
-    secure: true,          // 🔥 importante en producción (https)
-    sameSite: "none"       // 🔥 necesario para Netlify + Railway
+  cookie: {
+    maxAge: 1000 * 60 * 30, // 30 min
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
   }
 }));
 
-// ✅ RUTAS
+// ✅ Rutas
 app.use("/abm", abmRoutes);
-
-// Servir imágenes
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Públicas
-app.use("/productos", productosRoutes);
-
-// Protegidas
-app.use("/admin/productos", verificarSesion, productosRoutes);
-
-// Auth
 app.use("/auth", authRoutes);
 
-// ✅ PUERTO
+// Imágenes
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Productos públicos
+app.use("/productos", productosRoutes);
+
+// Productos protegidos
+app.use("/admin/productos", verificarSesion, productosRoutes);
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor backend en puerto ${PORT} 🚀`);
-});
+app.listen(PORT, () => console.log(`Servidor backend en puerto ${PORT} 🚀`));

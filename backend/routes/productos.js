@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../models/db");
+const db = require("../models/db");
 
-// Obtener productos (catálogo público)
+// Obtener productos públicos
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await connection.query("SELECT * FROM productos");
-    res.json(rows); // siempre array
+    const [rows] = await db.query("SELECT * FROM productos");
+    res.json(rows);
   } catch (err) {
-    console.error("Error al obtener productos:", err);
+    console.error(err);
     res.status(500).json({ error: "Error al obtener productos" });
   }
 });
