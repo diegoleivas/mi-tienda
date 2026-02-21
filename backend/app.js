@@ -13,7 +13,7 @@ const app = express();
 // ✅ CORS: permite tu frontend local y remoto
 app.use(cors({
   origin: [
-    "http://localhost:3000",
+    
     "https://fileteandoando.netlify.app" // tu Netlify real
   ],
   credentials: true
