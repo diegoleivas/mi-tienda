@@ -1,7 +1,9 @@
 import { useState } from "react";
-import "./NuevoProducto.css"; // 👈 archivo de estilos
+import { useProductos } from "./useProductos"; // 🔹 hook compartido
+import "./NuevoProducto.css";
 
 function NuevoProducto() {
+  const { cargarProductos, API_URL } = useProductos(); // opcional si querés refrescar la lista
   const [formData, setFormData] = useState({
     nombre: "",
     precio: "",
@@ -17,18 +19,32 @@ function NuevoProducto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  fetch("http://localhost:3001/abm/productos", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData)
-})
 
+    fetch(`${API_URL}/abm/productos`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    })
       .then((res) => res.json())
       .then((data) => {
         alert("Producto agregado con éxito 🚀");
-        console.log(data);
+        console.log("Respuesta backend:", data);
+
+        // 🔹 Limpiar formulario
+        setFormData({
+          nombre: "",
+          precio: "",
+          stock: "",
+          descripcion: "",
+          categoria: "",
+          imagen: ""
+        });
+
+        // 🔹 Opcional: refrescar productos en la lista
+        if (cargarProductos) cargarProductos();
       })
-      .catch((err) => console.error("Error:", err));
+      .catch((err) => console.error("Error al agregar producto:", err));
   };
 
   return (
@@ -36,22 +52,35 @@ function NuevoProducto() {
       <h2>Cargar nuevo producto</h2>
       <form onSubmit={handleSubmit}>
         <label>Nombre</label>
-        <input name="nombre" onChange={handleChange} required />
+        <input name="nombre" value={formData.nombre} onChange={handleChange} required />
 
         <label>Precio</label>
-        <input name="precio" type="number" step="0.01" onChange={handleChange} required />
+        <input
+          name="precio"
+          type="number"
+          step="0.01"
+          value={formData.precio}
+          onChange={handleChange}
+          required
+        />
 
         <label>Stock</label>
-        <input name="stock" type="number" onChange={handleChange} required />
+        <input
+          name="stock"
+          type="number"
+          value={formData.stock}
+          onChange={handleChange}
+          required
+        />
 
         <label>Descripción</label>
-        <textarea name="descripcion" onChange={handleChange} />
+        <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} />
 
         <label>Categoría</label>
-        <input name="categoria" onChange={handleChange} />
+        <input name="categoria" value={formData.categoria} onChange={handleChange} />
 
         <label>Imagen (archivo)</label>
-        <input name="imagen" onChange={handleChange} />
+        <input name="imagen" value={formData.imagen} onChange={handleChange} placeholder="/uploads/archivo.jpg" />
 
         <button type="submit">Guardar producto</button>
       </form>
