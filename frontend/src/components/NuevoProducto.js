@@ -1,47 +1,64 @@
 import { useState } from "react";
 import { useProductos } from "./useProductos"; // 🔹 hook compartido
+import axios from "axios";
 import "./NuevoProducto.css";
 
 function NuevoProducto() {
-  const { cargarProductos, API_URL } = useProductos(); // opcional si querés refrescar la lista
+  const { cargarProductos, API_URL } = useProductos(); // para refrescar la lista
   const [formData, setFormData] = useState({
     nombre: "",
     precio: "",
     stock: "",
     descripcion: "",
-    categoria: "",
-    imagen: ""
+    categoria: ""
   });
+  const [imagenFile, setImagenFile] = useState(null);
 
+  // Cambios de inputs de texto
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Selección de archivo
+  const handleFileChange = (e) => {
+    setImagenFile(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${API_URL}/abm/productos`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert("Producto agregado con éxito 🚀");
-        console.log("Respuesta backend:", data);
+    if (!formData.nombre || !formData.precio) {
+      alert("El nombre y el precio son obligatorios");
+      return;
+    }
 
-        // 🔹 Limpiar formulario
+    const data = new FormData();
+    data.append("nombre", formData.nombre);
+    data.append("precio", formData.precio);
+    data.append("stock", formData.stock);
+    data.append("descripcion", formData.descripcion);
+    data.append("categoria", formData.categoria);
+    if (imagenFile) data.append("imagen", imagenFile);
+
+    axios.post(`${API_URL}/abm/productos`, data, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+      .then((res) => {
+        alert("Producto agregado con éxito 🚀");
+        console.log("Respuesta backend:", res.data);
+
+        // Limpiar formulario
         setFormData({
           nombre: "",
           precio: "",
           stock: "",
           descripcion: "",
-          categoria: "",
-          imagen: ""
+          categoria: ""
         });
+        setImagenFile(null);
 
-        // 🔹 Opcional: refrescar productos en la lista
+        // Refrescar lista de productos
         if (cargarProductos) cargarProductos();
       })
       .catch((err) => console.error("Error al agregar producto:", err));
@@ -80,7 +97,7 @@ function NuevoProducto() {
         <input name="categoria" value={formData.categoria} onChange={handleChange} />
 
         <label>Imagen (archivo)</label>
-        <input name="imagen" value={formData.imagen} onChange={handleChange} placeholder="/uploads/archivo.jpg" />
+        <input type="file" name="imagen" onChange={handleFileChange} />
 
         <button type="submit">Guardar producto</button>
       </form>
