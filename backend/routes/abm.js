@@ -31,8 +31,11 @@ router.get("/productos", async (req, res) => {
 
 // Alta de producto
 router.post("/productos", upload.single('imagen'), async (req, res) => {
+  console.log("req.body:", req.body);
+  console.log("req.file:", req.file);
   const { nombre, precio, stock, descripcion, categoria } = req.body;
   const imagen = req.file ? `/uploads/${req.file.filename}` : '';
+  console.log("Datos a insertar:", { nombre, precio, stock, descripcion, categoria, imagen });
   try {
     const [result] = await connection.query(
       "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES (?, ?, ?, ?, ?, ?)",
