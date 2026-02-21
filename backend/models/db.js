@@ -12,5 +12,6 @@ const connection = mysql.createPool(config);
 
 // Log de conexión
 console.log("Conectando a la base:", config.host, ":", config.port, "DB:", config.database);
+console.log(process.env.MYSQLUSER, process.env.MYSQLPASSWORD);
 
 module.exports = connection;
