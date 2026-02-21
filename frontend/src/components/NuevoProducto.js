@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./NuevoProducto.css";
 
-const API_URL = "https://mi-tienda-9ku2.onrender.com"; // misma URL que los demás módulos
+const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 function NuevoProducto() {
   const [formData, setFormData] = useState({

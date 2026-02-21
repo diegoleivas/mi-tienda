@@ -3,7 +3,7 @@ import HeroBanner from "../components/HeroBanner";
 import ProductoCard from "../components/ProductoCard";
 import Footer from "../components/Footer";
 
-const API_URL = "https://mi-tienda-9ku2.onrender.com";
+const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 function Home() {
   const [productos, setProductos] = useState([]);

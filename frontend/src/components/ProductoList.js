@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./ProductoList.css";
 
-const API_URL = "https://mi-tienda-9ku2.onrender.com";
+const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 function ProductoList() {
   const [productos, setProductos] = useState([]);
