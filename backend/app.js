@@ -15,11 +15,15 @@ app.use(express.json());
 
 // 🔹 Middleware global de CORS: va **antes de las rutas**
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://mi-tienda-48hm.vercel.app");
+  res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "https://mi-tienda-48hm.vercel.app");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-  next();
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 // ✅ SESIONES
