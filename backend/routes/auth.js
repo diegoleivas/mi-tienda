@@ -4,12 +4,12 @@ const db = require("../models/db");
 const bcrypt = require("bcrypt");
 
 router.post("/login", async (req, res) => {
-  const { usuario, password } = req.body;
+  const { username, password } = req.body; // usar username
 
   try {
     const [rows] = await db.query(
       "SELECT * FROM usuarios WHERE username = ?",
-      [usuario]
+      [username] // usar username
     );
 
     if (!rows.length) return res.status(401).json({ mensaje: "Usuario no encontrado" });
