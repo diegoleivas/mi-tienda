@@ -1,13 +1,16 @@
 const mysql = require("mysql2/promise");
 
-const connection = mysql.createPool({
+const config = {
   host: process.env.MYSQLHOST || "localhost",
   user: process.env.MYSQLUSER || "diego",
   password: process.env.MYSQLPASSWORD || "1234",
   database: process.env.MYSQLDATABASE || "tienda",
   port: process.env.MYSQLPORT || 3306,
-});
+};
 
-console.log("Conectando a la base:", connection.options.host, ":", connection.options.port, "DB:", connection.options.database);
+const connection = mysql.createPool(config);
+
+// Log de conexión
+console.log("Conectando a la base:", config.host, ":", config.port, "DB:", config.database);
 
 module.exports = connection;
