@@ -1,6 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../models/db");
+const multer = require("multer");
+const path = require("path");
+
+// Configuración de multer para subir imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../uploads"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
 
 
 // Listar productos (para el panel interno)
@@ -15,8 +30,9 @@ router.get("/productos", async (req, res) => {
 });
 
 // Alta de producto
-router.post("/productos", async (req, res) => {
-  const { nombre, precio, stock, descripcion, categoria, imagen } = req.body;
+router.post("/productos", upload.single('imagen'), async (req, res) => {
+  const { nombre, precio, stock, descripcion, categoria } = req.body;
+  const imagen = req.file ? `/uploads/${req.file.filename}` : null;
   try {
     const [result] = await connection.query(
       "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES (?, ?, ?, ?, ?, ?)",
