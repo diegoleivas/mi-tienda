@@ -7,6 +7,8 @@ export default function LoginForm({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL; // 👈 variable de entorno
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,17 +19,17 @@ export default function LoginForm({ onLogin }) {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3001/auth/login", {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ username, password }) // usar username
+        body: JSON.stringify({ username, password })
       });
 
       if (res.ok) {
         const data = await res.json();
         console.log("Login correcto:", data);
-        onLogin(data.username); // avisar al padre que se logueó
+        onLogin(data.username);
         navigate("/abm-interno");
       } else {
         let error = null;
