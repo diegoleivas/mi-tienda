@@ -44,7 +44,12 @@ app.use("/auth", authRoutes);
 app.use("/productos", productosRoutes);
 app.use("/admin/productos", verificarSesion, productosRoutes);
 
-// Servir imágenes
+// Servir imágenes con CORS
+app.use("/uploads", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", (process.env.FRONTEND_URL || "https://fileteandoando.vercel.app/").replace(/\/$/, ''));
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 3001;
