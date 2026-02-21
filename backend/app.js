@@ -37,8 +37,13 @@ app.use(session({
 app.use("/abm", abmRoutes);
 app.use("/auth", authRoutes);
 
-// Imágenes
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Imágenes con cabeceras CORS
+app.use("/uploads", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://mi-tienda-48hm.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+}, express.static(path.join(__dirname, "uploads")));
+
 
 // Productos públicos
 app.use("/productos", productosRoutes);
