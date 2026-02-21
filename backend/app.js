@@ -10,18 +10,19 @@ const abmRoutes = require("./routes/abm");
 
 const app = express();
 
-// ✅ CORS: permite tu frontend local y remoto
-app.use(cors({
-  origin: [
-     "https://mi-tienda-48hm.vercel.app"
-   // "https://fileteandoando.netlify.app" // tu Netlify real
-  ],
-  credentials: true
-}));
-
+// Esto va **primero**: permite que tu backend reciba JSON
 app.use(express.json());
 
-// ✅ SESIO
+// 🔹 Middleware global de CORS: va **antes de las rutas**
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://mi-tienda-48hm.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  next();
+});
+
+// ✅ SESIONES
 app.use(session({
   secret: process.env.SESSION_SECRET || "claveSecreta",
   resave: false,
@@ -33,23 +34,14 @@ app.use(session({
   }
 }));
 
-// ✅ Rutas
+// ✅ RUTAS
 app.use("/abm", abmRoutes);
 app.use("/auth", authRoutes);
-
-// Imágenes con cabeceras CORS
-app.use("/uploads", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://mi-tienda-48hm.vercel.app");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-}, express.static(path.join(__dirname, "uploads")));
-
-
-// Productos públicos
 app.use("/productos", productosRoutes);
-
-// Productos protegidos
 app.use("/admin/productos", verificarSesion, productosRoutes);
+
+// Servir imágenes
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Servidor backend en puerto ${PORT} 🚀`));
