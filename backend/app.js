@@ -13,7 +13,7 @@ const app = express();
 // ✅ CORS: permite tu frontend local y remoto
 app.use(cors({
   origin: [
-     "https://tu-dominio.vercel.app"
+     "https://mi-tienda-48hm.vercel.app/"
    // "https://fileteandoando.netlify.app" // tu Netlify real
   ],
   credentials: true
