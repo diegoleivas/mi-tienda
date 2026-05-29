@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../models/db");
+const pool = require("../models/db");
 
 // Obtener productos públicos
 router.get("/", async (req, res) => {
   const start = Date.now();
   try {
     console.log("Iniciando consulta a productos...");
-    const [rows] = await db.query("SELECT * FROM productos");
+    const { rows } = await pool.query("SELECT * FROM productos");
     const queryTime = Date.now() - start;
     console.log(`Consulta completada en ${queryTime}ms. Productos obtenidos: ${rows.length}`);
     res.json(rows);

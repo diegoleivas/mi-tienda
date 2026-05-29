@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../models/db");
+const pool = require("../models/db");
 const multer = require("multer");
 const path = require("path");
 
@@ -14,14 +14,12 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + path.extname(file.originalname));
   }
 });
-
 const upload = multer({ storage: storage });
 
-
-// Listar productos (para el panel interno)
+// Listar productos
 router.get("/productos", async (req, res) => {
   try {
-    const [rows] = await connection.query("SELECT * FROM productos");
+    const { rows } = await pool.query("SELECT * FROM productos");
     res.json(rows);
   } catch (err) {
     console.error("Error al obtener productos:", err);
@@ -31,17 +29,14 @@ router.get("/productos", async (req, res) => {
 
 // Alta de producto
 router.post("/productos", upload.single('imagen'), async (req, res) => {
-  console.log("req.body:", req.body);
-  console.log("req.file:", req.file);
   const { nombre, precio, stock, descripcion, categoria } = req.body;
   const imagen = req.file ? `/uploads/${req.file.filename}` : '';
-  console.log("Datos a insertar:", { nombre, precio, stock, descripcion, categoria, imagen });
   try {
-    const [result] = await connection.query(
-      "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES (?, ?, ?, ?, ?, ?)",
+    const { rows } = await pool.query(
+      "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
       [nombre, precio, stock, descripcion, categoria, imagen]
     );
-    res.json({ id: result.insertId, nombre, precio, stock, descripcion, categoria, imagen });
+    res.json({ id: rows[0].id, nombre, precio, stock, descripcion, categoria, imagen });
   } catch (err) {
     console.error("Error al crear producto:", err);
     res.status(500).json({ error: "Error al crear producto" });
@@ -53,8 +48,8 @@ router.put("/productos/:id", async (req, res) => {
   const { id } = req.params;
   const { nombre, precio, stock, descripcion, categoria, imagen } = req.body;
   try {
-    await connection.query(
-      "UPDATE productos SET nombre=?, precio=?, stock=?, descripcion=?, categoria=?, imagen=? WHERE id=?",
+    await pool.query(
+      "UPDATE productos SET nombre=$1, precio=$2, stock=$3, descripcion=$4, categoria=$5, imagen=$6 WHERE id=$7",
       [nombre, precio, stock, descripcion, categoria, imagen, id]
     );
     res.json({ id, nombre, precio, stock, descripcion, categoria, imagen });
@@ -68,7 +63,7 @@ router.put("/productos/:id", async (req, res) => {
 router.delete("/productos/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    await connection.query("DELETE FROM productos WHERE id=?", [id]);
+    await pool.query("DELETE FROM productos WHERE id=$1", [id]);
     res.json({ message: "Producto eliminado", id });
   } catch (err) {
     console.error("Error al eliminar producto:", err);

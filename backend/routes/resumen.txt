@@ -1,0 +1,28 @@
+
+
+Proyecto: fileteandoando
+
+Frontend: React + Axios + React Router → Vercel
+Backend: Node.js + Express → Render
+DB: MySQL (era Railway, perdida) → migrar a Supabase (PostgreSQL)
+
+Tablas:
+sqlCREATE TABLE productos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(255),
+  precio DECIMAL(10,2),
+  stock INT,
+  descripcion TEXT,
+  categoria VARCHAR(100),
+  imagen VARCHAR(255)
+);
+
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100),
+  password_hash VARCHAR(255),
+  rol VARCHAR(50)
+);
+Próximo paso: migrar a Supabase, cambiar mysql2 por pg en db.js, actualizar variables de entorno en Render.
+
+¡Hasta luego! 👋
