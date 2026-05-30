@@ -49,7 +49,7 @@ function EditarProducto() {
 
             {/* ✅ IMAGEN CORREGIDA */}
             <img
-              src={producto.imagen}
+              src={p.imagen}
               alt={p.nombre}
               className="miniatura"
             />

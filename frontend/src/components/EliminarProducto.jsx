@@ -61,7 +61,7 @@ function EliminarProducto() {
               onChange={() => toggleSeleccion(p.id || p.id_producto)}
             />
             <img
-              src={producto.imagen}
+              src={p.imagen}
               alt={p.nombre}
               className="miniatura"
               onError={(e) => (e.target.src = "/images/default.jpg")}
