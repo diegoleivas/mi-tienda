@@ -49,7 +49,7 @@ function EditarProducto() {
 
             {/* ✅ IMAGEN CORREGIDA */}
             <img
-              src={`${API_URL}${p.imagen}`}
+              src={p.imagen}
               alt={p.nombre}
               className="miniatura"
             />
