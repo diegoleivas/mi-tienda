@@ -18,9 +18,17 @@ router.post("/login", async (req, res) => {
     const passwordValida = await bcrypt.compare(password, user.password_hash);
     if (!passwordValida) return res.status(401).json({ mensaje: "Contraseña inválida" });
 
-    req.session.user = { id: user.id, username: user.username };
-    console.log("Sesión guardada:", req.session); 
-    return res.json({ mensaje: "Login correcto", usuario: user.username });
+   req.session.user = { id: user.id, username: user.username };
+   req.session.save((err) => {
+  if (err) {
+    console.error("Error guardando sesión:", err);
+    return res.status(500).json({ mensaje: "Error en sesión" });
+  }
+  console.log("Sesión guardada:", req.session);
+  return res.json({ mensaje: "Login correcto", usuario: user.username });
+});
+
+
   } catch (err) {
     console.error(err);
     return res.status(500).json({ mensaje: "Error en el servidor" });
