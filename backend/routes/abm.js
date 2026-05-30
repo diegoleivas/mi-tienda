@@ -2,19 +2,17 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../models/db");
 const multer = require("multer");
-const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
-// Configuración de multer para subir imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
+// Configuración de Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
-const upload = multer({ storage: storage });
+
+// Multer en memoria (no guarda en disco)
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Listar productos
 router.get("/productos", async (req, res) => {
@@ -30,8 +28,17 @@ router.get("/productos", async (req, res) => {
 // Alta de producto
 router.post("/productos", upload.single('imagen'), async (req, res) => {
   const { nombre, precio, stock, descripcion, categoria } = req.body;
-  const imagen = req.file ? `/uploads/${req.file.filename}` : '';
+  let imagen = '';
   try {
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({ folder: "fileteando" }, (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }).end(req.file.buffer);
+      });
+      imagen = result.secure_url;
+    }
     const { rows } = await pool.query(
       "INSERT INTO productos (nombre, precio, stock, descripcion, categoria, imagen) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
       [nombre, precio, stock, descripcion, categoria, imagen]
