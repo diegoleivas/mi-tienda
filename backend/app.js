@@ -7,6 +7,8 @@ const authRoutes = require("./routes/auth");
 const productosRoutes = require("./routes/productos");
 const verificarSesion = require("./middleware/verificarSesion");
 const abmRoutes = require("./routes/abm");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require("./models/db");
 
 const app = express();
 
@@ -27,10 +29,15 @@ app.use((req, res, next) => {
 });
 
 // ✅ SESIONES
+
 app.use(session({
+  store: new pgSession({
+    pool: pool,
+    tableName: "session"
+  }),
   secret: process.env.SESSION_SECRET || "claveSecreta",
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 30,
     secure: true,
