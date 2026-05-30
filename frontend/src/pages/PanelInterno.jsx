@@ -58,15 +58,7 @@ function PanelInterno() {
           <div>
             <h3>Listado de productos</h3>
             <ProductoList />
-            <ul>
-              {productos.map(p => (
-                <li key={p.id}>
-                  <img src={p.imagen} alt={p.nombre} width="50" />
-                  {p.nombre} - ${p.precio}
-                </li>
-              ))}
-            </ul>
-          </div>
+           </div>
         )}
         {activePanel === "eliminar" && (
           <div>
