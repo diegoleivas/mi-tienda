@@ -40,7 +40,7 @@ app.use(session({
 }));
 
 // ✅ RUTAS
-app.use("/abm", abmRoutes);
+app.use("/abm", verificarSesion, abmRoutes); // 
 app.use("/auth", authRoutes);
 app.use("/productos", productosRoutes);
 app.use("/admin/productos", verificarSesion, productosRoutes);
