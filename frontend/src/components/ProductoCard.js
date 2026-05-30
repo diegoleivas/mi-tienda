@@ -1,6 +1,6 @@
 import "./ProductoCard.css";
 
-const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:3001").replace(/\/$/, ""); // Remove trailing slash
+
 
 function ProductoCard({ producto }) {
   const imageUrl = producto.imagen;
