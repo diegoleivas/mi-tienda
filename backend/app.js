@@ -29,13 +29,12 @@ app.use((req, res, next) => {
 // ✅ SESIONES
 app.use(session({
   secret: process.env.SESSION_SECRET || "claveSecreta",
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
-    // maxAge: 1000 * 60 * 30, // 30 min
-    maxAge: 1000 * 20, // 20 segundos para pruebas
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+    maxAge: 1000 * 60 * 30,
+    secure: true,
+    sameSite: "none"
   }
 }));
 
