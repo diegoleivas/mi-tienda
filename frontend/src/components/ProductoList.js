@@ -29,7 +29,7 @@ function ProductoList() {
             <li key={producto.id} className="item-producto">
               
              <img
-               src={p.imagen}
+               src={producto.imagen}
                alt={producto.nombre}
                className="miniatura"
             />
