@@ -3,17 +3,16 @@ import NuevoProducto from "../components/NuevoProducto";
 import ProductoList from "../components/ProductoList";
 import EliminarProducto from "../components/EliminarProducto";
 import EditarProducto from "../components/EditarProducto";
-
-
-
 import "./PanelInterno.css";
 
+const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:3001").replace(/\/$/, "");
+
 function PanelInterno() {
-  const [activePanel, setActivePanel] = useState("listar"); // arranca mostrando listado
+  const [activePanel, setActivePanel] = useState("listar");
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/abm")
+    fetch(`${API_URL}/abm`)
       .then(res => res.json())
       .then(data => setProductos(data))
       .catch(err => console.error(err));
@@ -21,7 +20,7 @@ function PanelInterno() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3001/abm/productos/${id}`, {
+      await fetch(`${API_URL}/abm/productos/${id}`, {
         method: "DELETE",
         credentials: "include"
       });
@@ -34,29 +33,20 @@ function PanelInterno() {
   return (
     <div className="panel-container">
       <h2>Panel Interno</h2>
-
-      {/* Cards para elegir panel */}
       <div className="cards-grid">
         <div className="card" onClick={() => setActivePanel("alta")}>
           <h3>Alta de producto</h3>
         </div>
-
         <div className="card" onClick={() => setActivePanel("listar")}>
           <h3>Listado de productos</h3>
         </div>
-
         <div className="card" onClick={() => setActivePanel("eliminar")}>
           <h3>Eliminar producto</h3>
         </div>
         <div className="card" onClick={() => setActivePanel("editar")}>
-        <h3>Editar producto</h3>
-       </div>
-
-
-        
+          <h3>Editar producto</h3>
+        </div>
       </div>
-
-      {/* Panel dinámico debajo de las cards */}
       <div className="panel-content">
         {activePanel === "alta" && (
           <div>
@@ -64,7 +54,6 @@ function PanelInterno() {
             <NuevoProducto />
           </div>
         )}
-
         {activePanel === "listar" && (
           <div>
             <h3>Listado de productos</h3>
@@ -79,7 +68,6 @@ function PanelInterno() {
             </ul>
           </div>
         )}
-
         {activePanel === "eliminar" && (
           <div>
             <h3>Eliminar producto</h3>
@@ -94,15 +82,12 @@ function PanelInterno() {
             </ul>
           </div>
         )}
-
         {activePanel === "editar" && (
-  <div>
-    <h3>Editar producto</h3>
-    <EditarProducto />
-  </div>
-)}
-
-
+          <div>
+            <h3>Editar producto</h3>
+            <EditarProducto />
+          </div>
+        )}
       </div>
     </div>
   );
