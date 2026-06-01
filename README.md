@@ -43,7 +43,9 @@ Online store for Buenos Aires fileteado art products, built as a personal projec
 - 
 <img width="1897" height="937" alt="image" src="https://github.com/user-attachments/assets/4e921220-f09d-4145-998a-d162b763a0fa" />
 
+
 <img width="1905" height="800" alt="image" src="https://github.com/user-attachments/assets/a50896b8-8824-42b7-86e3-e079c8e95e04" />
+
 
 <img width="1883" height="890" alt="image" src="https://github.com/user-attachments/assets/47c0a441-3e45-411e-aed8-7b75103189ad" />
 
