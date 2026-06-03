@@ -2,13 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
-
 const authRoutes = require("./routes/auth");
 const productosRoutes = require("./routes/productos");
 const verificarSesion = require("./middleware/verificarSesion");
 const abmRoutes = require("./routes/abm");
-
-
 const app = express();
 
 // Esto va **primero**: permite que tu backend reciba JSON
