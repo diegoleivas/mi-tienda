@@ -1,6 +1,4 @@
 const express = require("express");
-//const cors = require("cors");
-//const path = require("path");
 const session = require("express-session");
 const authRoutes = require("./routes/auth");
 const productosRoutes = require("./routes/productos");
@@ -24,7 +22,7 @@ app.use((req, res, next) => {
   }
 });
 
-// ✅ SESIONES
+//  SESIONES
 
 
 app.use(session({
@@ -38,23 +36,17 @@ app.use(session({
   }
 }));
 
-// ✅ RUTAS
+//  RUTAS
 app.use("/abm", abmRoutes); // sin verificarSesion
 app.use("/auth", authRoutes);
 app.use("/productos", productosRoutes);
 app.use("/admin/productos", verificarSesion, productosRoutes);
 
-// Servir imágenes con CORS
-/*app.use("/uploads", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", (process.env.FRONTEND_URL || "https://fileteandoando.vercel.app/").replace(/\/$/, ''));
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); */
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Servidor backend en puerto ${PORT} 🚀`));
 
 app.get("/", (req, res) => {
   res.send("Backend de mi-tienda funcionando 🚀");
 });
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Servidor backend en puerto ${PORT} 🚀`));
