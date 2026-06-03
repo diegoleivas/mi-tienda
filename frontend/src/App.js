@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth } from "./hooks/useAuth";
 import PanelInterno from "./pages/PanelInterno";
+import ProductoDetalle from "./pages/ProductoDetalle";
 
 
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home onLogin={login} user={user} />} />
         <Route path="/abm" element={<AbmInterno onLogin={login} />} /> 
+        <Route path="/producto/:id" element={<ProductoDetalle />} />
         
         
         <Route
